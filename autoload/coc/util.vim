@@ -126,7 +126,7 @@ endfunction
 function! coc#util#job_command()
   let argv = get(g:, 'coc_node_args', ['--no-warnings'])
 
-  if exists('g:coc_use_pkg') && type('g:coc_use_pkg') == v:t_list
+  if exists('g:coc_use_pkg') && type(g:coc_use_pkg) == v:t_string
     return g:coc_use_pkg + argv
   endif
 

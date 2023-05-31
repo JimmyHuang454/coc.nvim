@@ -3,6 +3,8 @@ if exists('g:did_coc_loaded') || v:version < 800
   finish
 endif
 
+let g:coc_base_dir = tr(expand('<sfile>:p:h:h'), '\', '/')
+
 function! s:checkVersion() abort
   let l:unsupported = 0
   if get(g:, 'coc_disable_startup_warning', 0) != 1

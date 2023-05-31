@@ -124,6 +124,12 @@ function! coc#util#open_file(cmd, file)
 endfunction
 
 function! coc#util#job_command()
+  let argv = get(g:, 'coc_node_args', ['--no-warnings'])
+
+  if exists('g:coc_use_pkg') && type('g:coc_use_pkg') == v:t_list
+    return g:coc_use_pkg + argv
+  endif
+
   if (has_key(g:, 'coc_node_path'))
     let node = expand(g:coc_node_path)
   else
@@ -141,7 +147,7 @@ function! coc#util#job_command()
     endif
     return
   endif
-  return [node] + get(g:, 'coc_node_args', ['--no-warnings']) + [s:root.'/build/index.js']
+  return [node] + argv + [s:root.'/build/index.js']
 endfunction
 
 function! coc#util#jump(cmd, filepath, ...) abort

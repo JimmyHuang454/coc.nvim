@@ -134,30 +134,42 @@ function! coc#rpc#stop()
   endtry
 endfunction
 
+function! coc#rpc#close_all()
+  if empty(s:client)
+    return
+  endif
+
+  call coc#highlight#clear_all()
+  call coc#ui#sign_unplace()
+  call coc#float#close_all()
+  autocmd! coc_dynamic_autocmd
+  autocmd! coc_dynamic_content
+  autocmd! coc_dynamic_option
+  call coc#rpc#request('detach', [])
+  let g:coc_service_initialized = 0
+  sleep 100m
+
+  if exists('$COC_NVIM_REMOTE_ADDRESS')
+    call coc#rpc#close_connection()
+  endif
+endfunction
+
 function! coc#rpc#restart()
   if empty(s:client)
     call coc#rpc#start_server()
-  else
-    call coc#highlight#clear_all()
-    call coc#ui#sign_unplace()
-    call coc#float#close_all()
-    autocmd! coc_dynamic_autocmd
-    autocmd! coc_dynamic_content
-    autocmd! coc_dynamic_option
-    call coc#rpc#request('detach', [])
-    let g:coc_service_initialized = 0
-    sleep 100m
-    if exists('$COC_NVIM_REMOTE_ADDRESS')
-      call coc#rpc#close_connection()
-      sleep 100m
-      call coc#rpc#start_server()
-    else
-      let s:client['command'] = coc#util#job_command()
-      call coc#client#restart(s:name)
-      call s:check_vim_enter()
-    endif
-    echohl MoreMsg | echom 'starting coc.nvim service' | echohl None
+    return
   endif
+
+  call coc#rpc#close_all()
+
+  if exists('$COC_NVIM_REMOTE_ADDRESS')
+    call coc#rpc#start_server()
+  else
+    let s:client['command'] = coc#util#job_command()
+    call coc#client#restart(s:name)
+    call s:check_vim_enter()
+  endif
+  echohl MoreMsg | echom 'starting coc.nvim service' | echohl None
 endfunction
 
 function! coc#rpc#close_connection() abort

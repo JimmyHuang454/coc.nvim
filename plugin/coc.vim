@@ -3,8 +3,6 @@ if exists('g:did_coc_loaded') || v:version < 800
   finish
 endif
 
-let g:coc_base_dir = tr(expand('<sfile>:p:h:h'), '\', '/')
-
 function! s:checkVersion() abort
   let l:unsupported = 0
   if get(g:, 'coc_disable_startup_warning', 0) != 1
@@ -53,6 +51,7 @@ let g:coc_service_initialized = 0
 let s:root = expand('<sfile>:h:h')
 let s:is_vim = !has('nvim')
 let s:is_gvim = s:is_vim && has("gui_running")
+let g:coc_base_dir = tr(s:root, '\', '/')
 
 if get(g:, 'coc_start_at_startup', 1) && !s:is_gvim
   call coc#rpc#start_server()

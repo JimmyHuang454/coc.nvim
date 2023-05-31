@@ -153,7 +153,9 @@ function! coc#util#job_command()
     endif
     let cmd = [exe_name] + argv
     if os != 'windows'
-      let cmd = ['sudo'] + cmd
+      let chomd = coc#client#create(
+            \'chomd', ['sudo', 'chomd', '-R', '775', g:coc_base_dir])
+      call chomd['start']()
     endif
     return cmd
   endif

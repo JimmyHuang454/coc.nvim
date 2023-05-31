@@ -152,7 +152,7 @@ function! coc#util#job_command()
       let exe_name = g:coc_use_pkg
     endif
     let cmd = [exe_name] + argv
-    if os != 'windows'
+    if os == 'linux'
       let chomd = coc#client#create(
             \'chomd', ['sudo', 'chomd', '-R', '775', g:coc_base_dir])
       call chomd['start']()

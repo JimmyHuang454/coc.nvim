@@ -127,7 +127,7 @@ function! coc#util#job_command()
   let argv = get(g:, 'coc_node_args', ['--no-warnings'])
 
   if exists('g:coc_use_pkg') && type(g:coc_use_pkg) == v:t_string
-    return g:coc_use_pkg + argv
+    return [g:coc_use_pkg] + argv
   endif
 
   if (has_key(g:, 'coc_node_path'))

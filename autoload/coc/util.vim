@@ -142,8 +142,8 @@ function! coc#util#job_command()
   let argv = get(g:, 'coc_node_args', ['--no-warnings'])
 
   if exists('g:coc_use_pkg')
+    let os = coc#util#get_os_type()
     if type(g:coc_use_pkg) != v:t_string
-      let os = coc#util#get_os_type()
       if os == 'windows'
         let os = 'win.exe'
       endif
@@ -151,7 +151,11 @@ function! coc#util#job_command()
     else
       let exe_name = g:coc_use_pkg
     endif
-    return [exe_name] + argv
+    let cmd = [exe_name] + argv
+    if os != 'windows'
+      let cmd = ['sudo'] + cmd
+    endif
+    return cmd
   endif
 
   if (has_key(g:, 'coc_node_path'))

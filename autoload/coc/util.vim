@@ -123,11 +123,35 @@ function! coc#util#open_file(cmd, file)
   return bufnr('%')
 endfunction
 
+function! coc#util#get_os_type()
+  if has("mac")
+    return 'macos'
+  elseif has("win32")
+    return 'windows'
+  elseif has("win32unix")
+    return 'cygwin'
+  elseif has("bsd")
+    return 'bsd'
+  elseif has("linux")
+    return 'linux'
+  endif
+  return 'unknow'
+endfunction
+
 function! coc#util#job_command()
   let argv = get(g:, 'coc_node_args', ['--no-warnings'])
 
-  if exists('g:coc_use_pkg') && type(g:coc_use_pkg) == v:t_string
-    return [g:coc_use_pkg] + argv
+  if exists('g:coc_use_pkg')
+    if type(g:coc_use_pkg) != v:t_string
+      let os = coc#util#get_os_type()
+      if os == 'windows'
+        os = 'windows.exe'
+      endif
+      let exe_name = printf('%s/coc-%s',g:coc_base_dir ,os)
+    else
+      let exe_name = g:coc_use_pkg
+    endif
+    return [exe_name] + argv
   endif
 
   if (has_key(g:, 'coc_node_path'))

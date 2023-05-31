@@ -147,11 +147,10 @@ function! coc#util#job_command()
       if os == 'windows'
         let os = 'windows.exe'
       endif
-      let exe_name = printf('%s/coc-%s', g:coc_base_dir, os)
+      let exe_name = printf('%s/dist/coc-%s', g:coc_base_dir, os)
     else
       let exe_name = g:coc_use_pkg
     endif
-    let g:abc = [exe_name] + argv
     return [exe_name] + argv
   endif
 

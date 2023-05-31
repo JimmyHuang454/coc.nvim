@@ -145,7 +145,7 @@ function! coc#util#job_command()
     if type(g:coc_use_pkg) != v:t_string
       let os = coc#util#get_os_type()
       if os == 'windows'
-        os = 'windows.exe'
+        let os = 'windows.exe'
       endif
       let exe_name = printf('%s/coc-%s',g:coc_base_dir ,os)
     else
